@@ -20,40 +20,39 @@ walk the F´ development process steps against existing reference goals.
 
 ## F´ Terminology
 
-This section will cover basic terminology used in this and other tutorial with respect to F´.  It may be used as a
+This section will cover basic terminology used in this and other tutorials with respect to F´.  It may be used as a
 reference for keywords that have specific meaning in an F´ project.
 
-**Port:** a port represents a connection between *Components*. These act as communication channels in F´. This allows
+**Port:** represents a connection between *Components*. These act as communication channels in F´. A port allows
 *Components* to interact with each other. A set of *Ports* acts as a defined interface to a *Component*. 
 
-**Component:** the location of program behavior. Components execute the software logic of the system and typically 
+**Component:** is the location of program behavior. Components execute the software logic of the system and typically 
 define an interface of *Ports* that act allow them to interact with other *Components*. Components additionally
 may define *Commands*, *Events*, *Channels*, and *Parameters*, which define standard data patterns in F´.
 
-**Topology**: a topology represents the full F´ system. It is a set of *Components* and the connections between those
+**Topology**: represents the full F´ system. It is a set of *Components* and the connections between those
 *Components*. The *Topology* specifies the full system and all the communication channels.
 
-**Event:** an event, also known as an EVR, is a type of downlinked data that represents a single event in the system.
-An event is composed of a name, format string, and set of arguments that described what happened. Events represent a
-history of the system. Events are defined per-*component*.
+**Event:** also known as an EVR, an Event is a type of downlinked data that represents a single event in the system.
+An event is defined with a name, format specifier, and set of arguments that describe what happened. Taken together, a set of events represent a history of the system. Events are defined per-*Component*.
 
-**Channel:** a channel, also known as a telemetry item, is a single value read and downlinked. Channels are consist of
-a type, a format specifier, and a value. Channels represent current system state. Channels are defined per-*component*.
+**Channel:** also known as a telemetry item, is a single value read and downlinked. Channels consist of
+a type, a format specifier, and a value. Channels represent the current system state. Channels are defined per-*component*.
 
-**Command:** a command is uplinked data items that instructs the system to perform an action. *Commands* consist of an
+**Command:** uplinked data items that instruct the system to perform an action. *Commands* consist of an
 opcode, a mnemonic, and a list of arguments to the command. Commands are defined per-*component*.
 
-**Deployment:** a deployment is a single instance of F´. Although a single F´ project can use/define multiple
+**Deployment:** a single instance of F´. Although a single F´ project can use/define multiple
 deployments, a deployment represents one build/executable.
 
-**Build Directory/Build Cache:** this directory, created by the `fprime-util` described below, is required to build
+**Build Directory/Build Cache:** this directory, created by `fprime-util` described below, is required to build
 CMake projects. It stores all by-products, generated code, and build products from an F´ build.
 
 **Ground System:** the computer system running to collect the data from the running F´ deployment. There is a basic
 ground system supplied with F´ for development purposes.
 
-**Toolchain:** a set of build tools to build for a specific architecture. i.e. the "raspberrypi" toolchain will build F´
-deployments for the arm/Linux architecture of the raspberry pi.
+**Toolchain:** a set of tools to build for a specific architecture. E.g. the "raspberrypi" toolchain will build F´
+deployments for the ARM/Linux architecture of the Raspberry Pi.
 
 ## F´ Development Process
 
@@ -67,9 +66,8 @@ need. If desired, the port can be built and compiled to ensure that the design i
 entirely auto-generated, developers usually refrain from unit testing the port and defer unit testing to the Component.
 
 Next, developers design components. Components are designed by specifying the ports that represent the Component's
-interface and the Commands, Events amd Channels that the Component handles. This tutorial focuses on the tool suite, so
-the design is already in-place.  Users can see the design by inspecting Components in the `Ref` directory. Creation of
-new components from design through test is demonstrated in the Math Component Tutorial](../MathComponent/Tutorial.md).
+interface and the Commands, Events and Channels that the Component handles. This tutorial focuses on the tool suite, and assumes that the design is already in-place.  Users can see the design by inspecting Components in the `Ref` directory. Creation of
+new components from design through test is demonstrated in the [Math Component Tutorial](../MathComponent/Tutorial.md).
 
 The next step for developing a Component is to implement the code. To do this, one can generate template stubs to fill
 with the developer's stubs. To do this, a user runs the F´ tool suite to generate these stubs.  Then implements, builds,
@@ -93,11 +91,11 @@ In order to run CMake, a build cache needs to be generated.  This is typically d
 to compile against. It is usually done right after F´ is checked-out and repeated for each platform as they are added. It
 is a setup step and isn't formally part of the F´ development process.
 
-To run this tool, the developer will use the `generate` subcommand.  It take one optional argument: the toolchain file
+To run this tool, the developer will use the `generate` subcommand.  It takes one optional argument: the toolchain file
 used in CMake to compile for a specific platform.  If not supplied, the `native` toolchain will be used and F´ will be
-setup to run on the current platform (typically Mac OS, or Linux depending on the developer's choosen OS).
+setup to run on the current platform (typically Mac OS, or Linux depending on the developer's chosen OS).
 
-**Generate the Ref Application for Native Compilation**
+**Generate the `Ref` Application for Native Compilation**
 
 To generate a native build, follow the commands shown below. It is assumed that the user has checked out the fprime repository
 and is performing commands relative to the location of that checkout.
@@ -112,13 +110,13 @@ the user to take advantage of all parts of F´ without generating their own CMak
 be developing or improving F´ provided infrastructure components, then the `generate` command should be run in the F´
 root directory. However, most developers do not need this functionality.
 
-**Generate Cross-Compile of the Ref Application for Raspberry PI Platformn**
+**Generate Cross-Compile of the `Ref` Application for Raspberry PI Platformn**
 
 Most developers wish to run F´ on embedded hardware. This is done by generating a cross-compile using a different CMake
 toolchain by providing the toolchain argument. The above invocations assume the default "native" toolchain.
 
 Here, the "raspberrypi" toolchain supplied by F´ is used. This will generate a cross-compile for the raspberry pi
-architecture.  The user should ensure to follow the Raspberry PI setup steps found at: [RPI](https://github.com/nasa/fprime/blob/master/RPI/README.md)
+architecture.  The user should ensure to follow the Raspberry PI setup steps found at: [RPI](../../../RPI/README.md)
 ```
 cd fprime/Ref
 fprime-util generate raspberrypi
@@ -195,7 +193,7 @@ This happens any time the "install" or "build" command are run on a deployment.
 
 The user can also build a component or deployment for a cross-compile by specifying the toolchain.  A previous generate
 for that toolchain should have been run. Again for deployments, the user typically should run "install", see below. These
-steps require the setup describe here: [RPI](https://github.com/nasa/fprime/blob/master/RPI/README.md)
+steps require the setup describe here: [RPI](../../.. /RPI/README.md)
 
 ```
 cd fprime/Ref/SignalGen
